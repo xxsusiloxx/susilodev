@@ -57,7 +57,7 @@ export default function ImageUpload() {
       </div>
 
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
-        <DrawerContent className="h-auto">
+        <DrawerContent className="h-auto bg-white">
           <section className="w-full flex flex-col  h-screen  justify-end items-center">
             <FilteredSection
               acceptedImg={acceptedImg}

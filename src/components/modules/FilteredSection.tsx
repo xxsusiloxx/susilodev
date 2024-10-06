@@ -259,7 +259,7 @@ const FilteredSection = memo(function FilteredSection({
                         className={cn([
                           activeTab === "square-crop" &&
                             "bg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed",
-                          "h-full w-full object-contain",
+                          "h-full w-full object-cover",
                         ])}
                         width={0}
                         height={0}
@@ -268,12 +268,10 @@ const FilteredSection = memo(function FilteredSection({
                       />
                     ) : (
                       objectUrl && (
-                        <Image
+                        <img
                           src={objectUrl}
-                          className="h-full w-full object-contain"
+                          className="h-full object-cover w-full"
                           alt="Original Image"
-                          width={0}
-                          height={0}
                         />
                       )
                     )}
