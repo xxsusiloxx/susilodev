@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  PaintBucket,
   Download,
   Ban,
   Highlighter,
   Sparkles,
+  Crop as CropIcon,
 } from "lucide-react";
 import React, { Fragment, useState, useEffect, memo } from "react";
 import { FileRejection } from "react-dropzone";
@@ -31,7 +31,7 @@ const downloadImage = () => {
   if (canvas) {
     canvas.toBlob((blob) => {
       if (blob) {
-        saveAs(blob, "processed.png"); // Save the blob as a file
+        saveAs(blob, `processed-${Date.now()}.png`); // Save the blob as a file
       }
     });
   }
@@ -54,6 +54,11 @@ const listEffect = [
     id: "rusian-beauty",
     name: "Rusian Beauty",
     icon: <Sparkles className="h-6 w-6 font-normal" />,
+  },
+  {
+    id: "square-crop",
+    name: "Centering Square Crop",
+    icon: <CropIcon className="h-6 w-6 font-normal" />,
   },
 ];
 
@@ -155,6 +160,17 @@ const FilteredSection = memo(function FilteredSection({
 
           break;
 
+        case "square-crop":
+          // Perform square crop
+          const srcHeight = src.rows;
+          const srcWidth = src.cols;
+          const size = Math.min(srcHeight, srcWidth); // Square size, minimum of width and height
+          const x = Math.floor((srcWidth - size) / 2); // Center X
+          const y = Math.floor((srcHeight - size) / 2); // Center Y
+          const rect = new cv.Rect(x, y, size, size);
+          dst = src.roi(rect); // Crop the region of interest (ROI)
+          break;
+
         default:
           cv.cvtColor(src, dst, cv.COLOR_RGBA2BGR);
           break;
@@ -209,12 +225,14 @@ const FilteredSection = memo(function FilteredSection({
                 ))}
                 <div className="relative">
                   {Boolean(processedImage || objectUrl) && (
-                    <section
-                      onClick={downloadImage}
-                      className="absolute right-3 top-3 rounded-full p-2 bg-black/60"
-                    >
-                      <Download className="w-5 h-5 text-white" />
-                    </section>
+                    <>
+                      <section
+                        onClick={downloadImage}
+                        className="absolute right-4 bottom-4 rounded-full p-2 bg-gray-900/60  cursor-pointer hover:bg-black"
+                      >
+                        <Download className="w-5 h-5 text-slate-200 font-bold" />
+                      </section>
+                    </>
                   )}
 
                   {processedImage ? (
@@ -248,7 +266,7 @@ const FilteredSection = memo(function FilteredSection({
               </CardDescription>
             </CardContent>
 
-            {Boolean(processedImage || objectUrl) && (
+            {(processedImage || objectUrl) && (
               <CardFooter className="w-full flex justify-center text-center  items-center font-medium text-slate-800 text-lg tracking-wider">
                 <span className="h-full justify-center items-center">
                   {getNameEffect(activeTab)}
@@ -257,21 +275,20 @@ const FilteredSection = memo(function FilteredSection({
             )}
           </Card>
         </TabsContent>
-
         <TabsList className="flex h-16 fixed bottom-16 right-0 left-0 items-center justify-center flex-row w-full overflow-x-auto whitespace-nowrap">
-          {listEffect.map(({ id, icon }) => (
-            <TabsTrigger
-              key={id}
-              value={id}
-              className="inline-block border-none"
-            >
-              {icon}
-            </TabsTrigger>
-          ))}
+          {(processedImage || objectUrl) &&
+            listEffect.map(({ id, icon }) => (
+              <TabsTrigger
+                key={id}
+                value={id}
+                className="inline-block border-none"
+              >
+                {icon}
+              </TabsTrigger>
+            ))}
         </TabsList>
       </Tabs>
       <canvas id="canvasOutput" style={{ display: "none" }}></canvas>{" "}
-      {/* Hidden canvas for processing */}
     </>
   );
 });

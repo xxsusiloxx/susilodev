@@ -43,7 +43,7 @@ export default function ImageUpload() {
   return (
     <section className="w-full flex flex-col mx-auto justify-center items-center">
       <section
-        className="fixed  right-5 left-5  bottom-10 z-50 dropzone py-4 bg-slate-100 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer  rounded-full lg:rounded-4xl"
+        className="fixed   right-5 left-5  bottom-10 z-50 dropzone py-4 bg-slate-100 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer  rounded-full lg:rounded-4xl"
         {...getRootProps()}
       >
         <input {...getInputProps()} />
