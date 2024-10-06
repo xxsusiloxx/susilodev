@@ -1,26 +1,14 @@
-import Image from "next/image";
-import { saveAs } from "file-saver";
+import Image from 'next/image';
+import { saveAs } from 'file-saver';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Download,
-  Ban,
-  Highlighter,
-  Sparkles,
-  Crop as CropIcon,
-} from "lucide-react";
-import React, { Fragment, useState, useEffect, memo } from "react";
-import { FileRejection } from "react-dropzone";
-import cv from "opencv-ts"; // Import OpenCV
-import { cn } from "@/lib/utils";
-import Mat from "opencv-ts/src/core/Mat";
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Download, Ban, Highlighter, Sparkles, Crop as CropIcon } from 'lucide-react';
+import React, { Fragment, useState, useEffect, memo } from 'react';
+import { FileRejection } from 'react-dropzone';
+import cv from 'opencv-ts'; // Import OpenCV
+import { cn } from '@/lib/utils';
+import Mat from 'opencv-ts/src/core/Mat';
 
 /**
  * A small icon component that displays a symbol.
@@ -29,13 +17,11 @@ import Mat from "opencv-ts/src/core/Mat";
  * @returns {JSX.Element}
  */
 const Icon = ({ simbol }: { simbol: string }) => (
-  <div className="text-2xl font-bold flex justify-center items-center h-8 w-8">
-    {simbol}
-  </div>
+  <div className="text-2xl font-bold flex justify-center items-center h-8 w-8">{simbol}</div>
 );
 
 const downloadImage = () => {
-  const canvas = document.querySelector("#canvasOutput") as HTMLCanvasElement;
+  const canvas = document.querySelector('#canvasOutput') as HTMLCanvasElement;
   if (canvas) {
     canvas.toBlob((blob) => {
       if (blob) {
@@ -46,26 +32,26 @@ const downloadImage = () => {
 };
 
 const listEffect = [
-  { id: "normal", name: "Normal", icon: <Icon simbol="N" /> },
+  { id: 'normal', name: 'Normal', icon: <Icon simbol="N" /> },
   {
-    id: "grayscale",
-    name: "Grayscale",
+    id: 'grayscale',
+    name: 'Grayscale',
     icon: <Icon simbol="G" />,
   },
   {
-    id: "graybold",
-    name: "Graybold",
+    id: 'graybold',
+    name: 'Graybold',
     icon: <Highlighter className="h-6 w-6 font-normal" />,
   },
 
   {
-    id: "rusian-beauty",
-    name: "Rusian Beauty",
+    id: 'rusian-beauty',
+    name: 'Rusian Beauty',
     icon: <Sparkles className="h-6 w-6 font-normal" />,
   },
   {
-    id: "square-crop",
-    name: "Forcesquare Crop",
+    id: 'square-crop',
+    name: 'Forcesquare Crop',
     icon: <CropIcon className="h-6 w-6 font-normal" />,
   },
 ];
@@ -75,7 +61,7 @@ function getNameEffect(id: string): React.ReactNode {
   if (findEffect) {
     return findEffect.name;
   }
-  return "-";
+  return '-';
 }
 
 interface FileWithPath extends File {
@@ -93,25 +79,16 @@ interface FilterProps {
 }
 
 const FileList = ({ files }: { files: FileWithPath[] }) => (
-  <ul className="flex flex-col gap-1 my-1">
+  <ul className="flex flex-col gap-1 mt-2 mb-5">
     {files.map((file: FileWithPath) => (
-      <li
-        key={file.path}
-        className="italic font-mono text-[0.65rem] truncate text-start text-slate-500"
-      >
-        <span className="bg-blue-50 text-slate-500 px-2 py-1 truncate rounded-sm">
-          {file.path}
-        </span>
+      <li key={file.path} className="italic font-mono text-[0.65rem] truncate text-start text-slate-500">
+        <span className="bg-blue-50 text-slate-500 px-2 py-1  truncate rounded-sm">{file.path}</span>
       </li>
     ))}
   </ul>
 );
 
-const ErrorList = ({
-  errors,
-}: {
-  errors: Array<{ code: string; message: string }>;
-}) => (
+const ErrorList = ({ errors }: { errors: Array<{ code: string; message: string }> }) => (
   <ul className="text-red-500 text-xs font-mono my-2 mb-3 italic">
     {errors.map(({ code, message }) => (
       <li className="text-xs" key={code}>
@@ -121,12 +98,8 @@ const ErrorList = ({
   </ul>
 );
 
-const FilteredSection = memo(function FilteredSection({
-  acceptedImg,
-  acceptedFiles,
-  fileRejections,
-}: FilterProps) {
-  const [activeTab, setActiveTab] = useState("normal");
+const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFiles, fileRejections }: FilterProps) {
+  const [activeTab, setActiveTab] = useState('normal');
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
 
@@ -150,20 +123,12 @@ const FilteredSection = memo(function FilteredSection({
 
       try {
         switch (activeTab) {
-          case "graybold":
+          case 'graybold':
             // Apply graybold effect
             cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY);
             cv.medianBlur(src, src, 7);
             const edges = new cv.Mat();
-            cv.adaptiveThreshold(
-              src,
-              edges,
-              255,
-              cv.ADAPTIVE_THRESH_MEAN_C,
-              cv.THRESH_BINARY,
-              9,
-              2
-            );
+            cv.adaptiveThreshold(src, edges, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 9, 2);
             const color = new cv.Mat();
             cv.bilateralFilter(src, color, 9, 75, 75, cv.BORDER_DEFAULT);
             cv.bitwise_and(color, color, dst, edges);
@@ -171,16 +136,16 @@ const FilteredSection = memo(function FilteredSection({
             color.delete();
             break;
 
-          case "grayscale":
+          case 'grayscale':
             cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
             break;
 
-          case "rusian-beauty":
+          case 'rusian-beauty':
             cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
             cv.bilateralFilter(src, dst, 9, 75, 100, cv.BORDER_DEFAULT);
             break;
 
-          case "square-crop":
+          case 'square-crop':
             const srcHeight = src.rows;
             const srcWidth = src.cols;
             const size = Math.min(srcHeight, srcWidth);
@@ -202,16 +167,14 @@ const FilteredSection = memo(function FilteredSection({
     };
 
     if (objectUrl) {
-      const imgElement = document.createElement("img");
+      const imgElement = document.createElement('img');
       imgElement.src = objectUrl;
 
       imgElement.onload = () => {
         const src = cv.imread(imgElement);
         const dst = applyEffect(src);
 
-        const canvas = document.querySelector(
-          "#canvasOutput"
-        ) as HTMLCanvasElement;
+        const canvas = document.querySelector('#canvasOutput') as HTMLCanvasElement;
         if (canvas) {
           cv.imshow(canvas, dst);
           setProcessedImage(canvas.toDataURL());
@@ -233,17 +196,13 @@ const FilteredSection = memo(function FilteredSection({
 
   return (
     <>
-      <Tabs
-        defaultValue="normal"
-        onValueChange={(value) => setActiveTab(value)}
-      >
+      <Tabs defaultValue="normal" onValueChange={(value) => setActiveTab(value)}>
         <TabsContent value={activeTab} className="">
           <Card
             className={cn([
-              "flex border-none absolute bg-transparent shadow-none left-0  right-0 flex-col p-0 justify-end w-full max-w-[400px] mx-auto",
-              Boolean(processedImage || objectUrl) ? "bottom-32" : "bottom-12",
-            ])}
-          >
+              'flex border-none absolute bg-transparent shadow-none left-0  right-0 flex-col p-0 justify-end w-full max-w-[400px] mx-auto',
+              Boolean(processedImage || objectUrl) ? 'bottom-32' : 'bottom-12',
+            ])}>
             <CardContent className="w-full px-4 py-0 lg:px-0 lg:py-4 h-auto space-y-2 flex flex-col  justify-center mx-auto items-center  overflow-y-auto">
               <CardDescription className="rounded-xl  w-full">
                 <div className="relative  flex justify-center  items-center w-full flex-col mx-auto left-0 right-0">
@@ -252,8 +211,7 @@ const FilteredSection = memo(function FilteredSection({
                       <>
                         <section
                           onClick={downloadImage}
-                          className="absolute right-2 z-50 lg:right-4 bottom-2 lg:bottom-4 rounded-full p-2 bg-gray-900/50 cursor-pointer hover:bg-gray-900"
-                        >
+                          className="absolute right-2 z-50 lg:right-4 bottom-2 lg:bottom-4 rounded-full p-2 bg-gray-900/50 cursor-pointer hover:bg-gray-900">
                           <Download className="w-5 h-5 text-slate-200 font-bold" />
                         </section>
                       </>
@@ -263,10 +221,10 @@ const FilteredSection = memo(function FilteredSection({
                       <Image
                         src={processedImage}
                         className={cn([
-                          activeTab === "square-crop"
-                            ? "bg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed"
-                            : "border-solid border-slate-200 border-[1px] ",
-                          "h-full w-full object-cover",
+                          activeTab === 'square-crop'
+                            ? 'bg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed'
+                            : 'border-solid border-slate-200 border-[1px] ',
+                          'h-full w-full object-cover',
                         ])}
                         width={0}
                         height={0}
@@ -274,13 +232,7 @@ const FilteredSection = memo(function FilteredSection({
                         sizes="100vw"
                       />
                     ) : (
-                      objectUrl && (
-                        <img
-                          src={objectUrl}
-                          className="h-full object-cover w-full"
-                          alt="Original Image"
-                        />
-                      )
+                      objectUrl && <img src={objectUrl} className="h-full object-cover w-full" alt="Original Image" />
                     )}
                   </div>
                   {fileRejections?.length > 0 && (
@@ -302,9 +254,7 @@ const FilteredSection = memo(function FilteredSection({
 
             {(processedImage || objectUrl) && (
               <CardFooter className="w-full flex truncate h-8 justify-center text-center  items-center font-medium text-slate-800 text-lg tracking-wider">
-                <span className="h-full text-sm justify-center items-center">
-                  {getNameEffect(activeTab)}
-                </span>
+                <span className="h-full text-sm justify-center items-center">{getNameEffect(activeTab)}</span>
               </CardFooter>
             )}
           </Card>
@@ -316,15 +266,14 @@ const FilteredSection = memo(function FilteredSection({
               <TabsTrigger
                 key={id}
                 value={id}
-                className="border-none aspect-square w-12 h-12 md:w-16 md:h-16 items-center justify-center flex"
-              >
+                className="border-none aspect-square w-12 h-12 md:w-16 md:h-16 items-center justify-center flex">
                 {icon}
               </TabsTrigger>
             ))}
           </TabsList>
         )}
       </Tabs>
-      <canvas id="canvasOutput" style={{ display: "none" }}></canvas>{" "}
+      <canvas id="canvasOutput" style={{ display: 'none' }}></canvas>{' '}
     </>
   );
 });
