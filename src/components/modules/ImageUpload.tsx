@@ -68,7 +68,7 @@ export default function ImageUpload() {
           <DrawerFooter className="">
             <DrawerClose className="text-sm w-full  mx-auto md:text-base font-medium text-red-400 tracking-wider">
               <Button
-                className="w-full bg-red-50/90 hover:bg-red-800/90 hover:text-white text-red-900 shadow-none max-w-[400px] rounded-lg text-xs"
+                className="w-full bg-red-50 hover:bg-red-800/70 hover:text-white text-red-900 shadow-none max-w-[400px] rounded-lg text-xs"
                 size="sm"
               >
                 Cancel

@@ -16,16 +16,10 @@ import {
   Sparkles,
   Crop as CropIcon,
 } from "lucide-react";
-import React, {
-  Fragment,
-  useState,
-  useEffect,
-  useLayoutEffect,
-  memo,
-} from "react";
+import React, { Fragment, useState, useEffect, memo } from "react";
 import { FileRejection } from "react-dropzone";
 import cv from "opencv-ts"; // Import OpenCV
-import { cn } from "@/lib/utils";
+import { bytesToSize, cn } from "@/lib/utils";
 
 /**
  * A small icon component that displays a symbol.
@@ -141,54 +135,54 @@ const FilteredSection = memo(function FilteredSection({
     const applyEffect = (src: any) => {
       let dst = new cv.Mat();
 
-      try {
-        switch (activeTab) {
-          case "graybold":
-            // Apply graybold effect
-            cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY);
-            cv.medianBlur(src, src, 7);
-            const edges = new cv.Mat();
-            cv.adaptiveThreshold(
-              src,
-              edges,
-              255,
-              cv.ADAPTIVE_THRESH_MEAN_C,
-              cv.THRESH_BINARY,
-              9,
-              2
-            );
-            const color = new cv.Mat();
-            cv.bilateralFilter(src, color, 9, 75, 75, cv.BORDER_DEFAULT);
-            cv.bitwise_and(color, color, dst, edges);
-            edges.delete();
-            color.delete();
-            break;
+      switch (activeTab) {
+        case "graybold":
+          // Apply graybold effect
+          cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY);
+          cv.medianBlur(src, src, 7);
+          const edges = new cv.Mat();
+          cv.adaptiveThreshold(
+            src,
+            edges,
+            255,
+            cv.ADAPTIVE_THRESH_MEAN_C,
+            cv.THRESH_BINARY,
+            9,
+            2
+          );
+          const color = new cv.Mat();
+          cv.bilateralFilter(src, color, 9, 75, 75, cv.BORDER_DEFAULT);
+          cv.bitwise_and(color, color, dst, edges);
+          edges.delete();
+          color.delete();
+          break;
 
-          case "grayscale":
-            cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-            break;
+        case "grayscale":
+          // Apply grayscale effect
+          cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+          break;
 
-          case "rusian-beauty":
-            cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
-            cv.bilateralFilter(src, dst, 9, 75, 100, cv.BORDER_DEFAULT);
-            break;
+        case "rusian-beauty":
+          // Apply rusian beauty effect
+          cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+          cv.bilateralFilter(src, dst, 9, 75, 100, cv.BORDER_DEFAULT);
+          break;
 
-          case "square-crop":
-            const srcHeight = src.rows;
-            const srcWidth = src.cols;
-            const size = Math.min(srcHeight, srcWidth);
-            const x = Math.floor((srcWidth - size) / 2);
-            const y = Math.floor((srcHeight - size) / 2);
-            const rect = new cv.Rect(x, y, size, size);
-            dst = src.roi(rect);
-            break;
+        case "square-crop":
+          // Perform square crop
+          const srcHeight = src.rows;
+          const srcWidth = src.cols;
+          const size = Math.min(srcHeight, srcWidth); // Square size, minimum of width and height
+          const x = Math.floor((srcWidth - size) / 2); // Center X
+          const y = Math.floor((srcHeight - size) / 2); // Center Y
+          const rect = new cv.Rect(x, y, size, size);
+          dst = src.roi(rect); // Crop the region of interest (ROI)
+          break;
 
-          default:
-            dst = src.clone();
-            break;
-        }
-      } catch (error) {
-        console.error(error);
+        default:
+          // Render the image without any effects (normal mode)
+          dst = src.clone(); // Ensure the original image is cloned and rendered as-is
+          break;
       }
 
       return dst;
@@ -202,25 +196,23 @@ const FilteredSection = memo(function FilteredSection({
         const src = cv.imread(imgElement);
         const dst = applyEffect(src);
 
+        // Set processed image URL
         const canvas = document.querySelector(
           "#canvasOutput"
         ) as HTMLCanvasElement;
         if (canvas) {
-          cv.imshow(canvas, dst);
-          setProcessedImage(canvas.toDataURL());
-
-          // Delete src and dst after drawing on the canvas
-          src.delete();
-          dst.delete(); // delete dst after imshow()
+          cv.imshow(canvas, dst); // show image to canvas
+          setProcessedImage(canvas.toDataURL()); // convert canvas to image Url
+        } else {
+          console.error("Canvas element not found");
         }
-      };
 
-      // Bersihkan sumber daya lain yang terkait dengan imgElement
-      return () => {
-        imgElement.remove();
+        // Cleanup
+        src.delete();
+        dst.delete();
       };
     } else {
-      setProcessedImage(null);
+      setProcessedImage(null); // Reset when no image is chosen
     }
   }, [activeTab, objectUrl]);
 
@@ -264,6 +256,7 @@ const FilteredSection = memo(function FilteredSection({
                         width={0}
                         height={0}
                         alt="Processed Image"
+                        loading="lazy"
                         sizes="100vw"
                       />
                     ) : (
@@ -274,6 +267,7 @@ const FilteredSection = memo(function FilteredSection({
                           alt="Original Image"
                           width={0}
                           height={0}
+                          loading="lazy"
                         />
                       )
                     )}
