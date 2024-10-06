@@ -16,16 +16,11 @@ import {
   Sparkles,
   Crop as CropIcon,
 } from "lucide-react";
-import React, {
-  Fragment,
-  useState,
-  useEffect,
-  useLayoutEffect,
-  memo,
-} from "react";
+import React, { Fragment, useState, useEffect, memo } from "react";
 import { FileRejection } from "react-dropzone";
 import cv from "opencv-ts"; // Import OpenCV
 import { cn } from "@/lib/utils";
+import Mat from "opencv-ts/src/core/Mat";
 
 /**
  * A small icon component that displays a symbol.
@@ -83,33 +78,41 @@ function getNameEffect(id: string): React.ReactNode {
   return "-";
 }
 
+interface FileWithPath extends File {
+  path: string;
+}
+
+interface FileRejectionWithPath extends FileRejection {
+  path: string;
+}
+
 interface FilterProps {
   acceptedImg?: Blob | null;
-  acceptedFiles: File[];
+  acceptedFiles?: FileWithPath[] | File[];
   fileRejections: FileRejection[];
 }
 
-const FileList = ({ files }: { files: File[] }) => (
-  <>
-    {files.map((file: any) => (
-      <div
-        className="flex flex-row w-full justify-end gap-1 mt-2 my-3"
+const FileList = ({ files }: { files: FileWithPath[] }) => (
+  <ul className="flex flex-col gap-1 mt-2 mb-3">
+    {files.map((file: FileWithPath) => (
+      <li
         key={file.path}
+        className="italic font-mono text-[0.65rem] truncate text-start text-slate-500"
       >
-        <p className=" italic font-mono max-w-full text-[0.65rem] truncate text-start text-slate-500 ">
-          {file.path}
-        </p>
-      </div>
+        {file.path}
+      </li>
     ))}
-  </>
+  </ul>
 );
 
-const ErrorList = ({ errors }: { errors: any[] }) => (
-  <ul>
-    {errors.map((e) => (
-      <li className="text-red-500 text-xs font-mono myt-1 mb-3" key={e.code}>
-        {e.message}
-      </li>
+const ErrorList = ({
+  errors,
+}: {
+  errors: Array<{ code: string; message: string }>;
+}) => (
+  <ul className="text-red-500 text-xs font-mono my-1 mb-3">
+    {errors.map(({ code, message }) => (
+      <li key={code}>{message}</li>
     ))}
   </ul>
 );
@@ -138,7 +141,7 @@ const FilteredSection = memo(function FilteredSection({
   }, [acceptedImg]);
 
   useEffect(() => {
-    const applyEffect = (src: any) => {
+    const applyEffect = (src: Mat.Mat) => {
       let dst = new cv.Mat();
 
       try {
@@ -224,6 +227,19 @@ const FilteredSection = memo(function FilteredSection({
     }
   }, [activeTab, objectUrl]);
 
+  // const FileList = ({ files }: { files: FileWithPath[] }) => (
+  //   <ul className="flex flex-col gap-1 mt-2 mb-3">
+  //     {files.map((file: FileWithPath) => (
+  //       <li
+  //         key={file.path}
+  //         className="italic font-mono text-[0.65rem] truncate text-start text-slate-500"
+  //       >
+  //         {file.path}
+  //       </li>
+  //     ))}
+  //   </ul>
+  // );
+
   return (
     <>
       <Tabs
@@ -235,9 +251,9 @@ const FilteredSection = memo(function FilteredSection({
             <CardContent className="w-full h-auto space-y-2 flex flex-col overflow-y-auto">
               <CardTitle></CardTitle>
               <CardDescription className="gap-2 pb-2 rounded-xl">
-                {fileRejections.map(({ file, errors }: any) => (
-                  <Fragment key={file.path}>
-                    <ErrorList errors={errors} />
+                {fileRejections.map((fileRejection, index) => (
+                  <Fragment key={index}>
+                    <ErrorList errors={fileRejection.errors} />
                   </Fragment>
                 ))}
                 <div className="relative">
@@ -283,7 +299,7 @@ const FilteredSection = memo(function FilteredSection({
                   )}
                 </div>
 
-                <FileList files={acceptedFiles} />
+                <FileList files={acceptedFiles as FileWithPath[]} />
               </CardDescription>
             </CardContent>
 

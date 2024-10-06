@@ -1,6 +1,6 @@
 "use client";
 
-import { useDropzone } from "react-dropzone";
+import { FileWithPath, useDropzone } from "react-dropzone";
 import { useState } from "react";
 import { Hand } from "lucide-react";
 
