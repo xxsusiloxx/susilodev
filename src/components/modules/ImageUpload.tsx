@@ -45,10 +45,13 @@ export default function ImageUpload() {
     <section className="w-full flex flex-col mx-auto justify-center items-center">
       <div className="flex items-center justify-center h-screen">
         <section
-          className="fixed lg:absolute max-w-[500px] mx-auto group h-14 lg:h-40 right-5 left-5 bottom-14 lg:bottom-1/2 lg:top-1/2  z-50 dropzone py-4 bg-slate-100 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer rounded-2xl lg:rounded-3xl"
+          className="fixed lg:absolute max-w-[800px] mx-auto group h-14 lg:h-60 right-5 left-5 bottom-12 lg:bottom-auto lg:top-1/4  z-50 dropzone py-4 bg-slate-100 hover:bg-slate-200/60 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer rounded-2xl lg:rounded-3xl"
           {...getRootProps()}
         >
-          <input {...getInputProps()} />
+          <input
+            {...getInputProps()}
+            className="focus:outline-none outline-none cursor-pointer"
+          />
           <p className="text-sm px-2 flex flex-row">
             <Hand className="w-auto h-4 mr-2 group-hover:animate-bounce " />
             Drag or click to select image

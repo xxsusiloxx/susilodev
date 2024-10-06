@@ -65,7 +65,7 @@ const listEffect = [
   },
   {
     id: "square-crop",
-    name: " Square Crop",
+    name: "Forcesquare Crop",
     icon: <CropIcon className="h-6 w-6 font-normal" />,
   },
 ];
@@ -93,13 +93,15 @@ interface FilterProps {
 }
 
 const FileList = ({ files }: { files: FileWithPath[] }) => (
-  <ul className="flex flex-col gap-1 mt-2 mb-3">
+  <ul className="flex flex-col gap-1 my-1">
     {files.map((file: FileWithPath) => (
       <li
         key={file.path}
         className="italic font-mono text-[0.65rem] truncate text-start text-slate-500"
       >
-        {file.path}
+        <span className="bg-blue-50 text-slate-500 px-2 py-1 truncate rounded-sm">
+          {file.path}
+        </span>
       </li>
     ))}
   </ul>
@@ -110,9 +112,11 @@ const ErrorList = ({
 }: {
   errors: Array<{ code: string; message: string }>;
 }) => (
-  <ul className="text-red-500 text-xs font-mono my-1 mb-3">
+  <ul className="text-red-500 text-xs font-mono my-2 mb-3 italic">
     {errors.map(({ code, message }) => (
-      <li key={code}>{message}</li>
+      <li className="text-xs" key={code}>
+        {message}
+      </li>
     ))}
   </ul>
 );
@@ -227,19 +231,6 @@ const FilteredSection = memo(function FilteredSection({
     }
   }, [activeTab, objectUrl]);
 
-  // const FileList = ({ files }: { files: FileWithPath[] }) => (
-  //   <ul className="flex flex-col gap-1 mt-2 mb-3">
-  //     {files.map((file: FileWithPath) => (
-  //       <li
-  //         key={file.path}
-  //         className="italic font-mono text-[0.65rem] truncate text-start text-slate-500"
-  //       >
-  //         {file.path}
-  //       </li>
-  //     ))}
-  //   </ul>
-  // );
-
   return (
     <>
       <Tabs
@@ -247,22 +238,21 @@ const FilteredSection = memo(function FilteredSection({
         onValueChange={(value) => setActiveTab(value)}
       >
         <TabsContent value={activeTab} className="">
-          <Card className="flex border-none absolute bottom-32 left-0 right-0 flex-col p-0 justify-end w-full max-w-[400px] mx-auto">
-            <CardContent className="w-full h-auto space-y-2 flex flex-col overflow-y-auto">
-              <CardTitle></CardTitle>
-              <CardDescription className="gap-2 pb-2 rounded-xl">
-                {fileRejections.map((fileRejection, index) => (
-                  <Fragment key={index}>
-                    <ErrorList errors={fileRejection.errors} />
-                  </Fragment>
-                ))}
-                <div className="relative">
-                  <div className="relative w-full h-full">
+          <Card
+            className={cn([
+              "flex border-none absolute bg-transparent shadow-none left-0  right-0 flex-col p-0 justify-end w-full max-w-[400px] mx-auto",
+              Boolean(processedImage || objectUrl) ? "bottom-32" : "bottom-12",
+            ])}
+          >
+            <CardContent className="w-full px-4 py-0 lg:px-0 lg:py-4 h-auto space-y-2 flex flex-col  justify-center mx-auto items-center  overflow-y-auto">
+              <CardDescription className="rounded-xl  w-full">
+                <div className="relative  flex justify-center  items-center w-full flex-col mx-auto left-0 right-0">
+                  <div className="relative mx-auto justify-center flex items-center w-full h-full">
                     {(processedImage || objectUrl) && (
                       <>
                         <section
                           onClick={downloadImage}
-                          className="absolute right-3 z-50 lg:right-4 bottom-3 lg:bottom-4 rounded-full p-2 bg-gray-900/60 cursor-pointer hover:bg-gray-900"
+                          className="absolute right-2 z-50 lg:right-4 bottom-2 lg:bottom-4 rounded-full p-2 bg-gray-900/50 cursor-pointer hover:bg-gray-900"
                         >
                           <Download className="w-5 h-5 text-slate-200 font-bold" />
                         </section>
@@ -273,8 +263,9 @@ const FilteredSection = memo(function FilteredSection({
                       <Image
                         src={processedImage}
                         className={cn([
-                          activeTab === "square-crop" &&
-                            "bg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed",
+                          activeTab === "square-crop"
+                            ? "bg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed"
+                            : "border-solid border-slate-200 border-[1px] ",
                           "h-full w-full object-cover",
                         ])}
                         width={0}
@@ -292,19 +283,25 @@ const FilteredSection = memo(function FilteredSection({
                       )
                     )}
                   </div>
-                  {fileRejections.length > 0 && (
-                    <div className="w-full  h-full bg-slate-200 flex justify-center items-center aspect-square">
-                      <Ban className="w-20 h-20 text-slate-400/60 font-normal" />
+                  {fileRejections?.length > 0 && (
+                    <div className="w-full mx-auto  h-full bg-slate-200 flex self-center justify-center items-center aspect-square">
+                      <Ban className="w-20 h-20 mx-auto text-slate-400/60 font-normal" />
                     </div>
                   )}
                 </div>
+
+                {fileRejections.map((fileRejection, index) => (
+                  <Fragment key={index}>
+                    <ErrorList errors={fileRejection.errors} />
+                  </Fragment>
+                ))}
 
                 <FileList files={acceptedFiles as FileWithPath[]} />
               </CardDescription>
             </CardContent>
 
             {(processedImage || objectUrl) && (
-              <CardFooter className="w-full flex justify-center text-center  items-center font-medium text-slate-800 text-lg tracking-wider">
+              <CardFooter className="w-full flex truncate h-8 justify-center text-center  items-center font-medium text-slate-800 text-lg tracking-wider">
                 <span className="h-full text-sm justify-center items-center">
                   {getNameEffect(activeTab)}
                 </span>
@@ -312,9 +309,10 @@ const FilteredSection = memo(function FilteredSection({
             )}
           </Card>
         </TabsContent>
-        <TabsList className="flex h-16 fixed bottom-16 max-w-[400px] mx-auto right-0 left-0  justify-center items-center flex-row w-full overflow-x-auto whitespace-nowrap">
-          {(processedImage || objectUrl) &&
-            listEffect.map(({ id, icon }) => (
+
+        {(processedImage || objectUrl) && (
+          <TabsList className="flex h-16 fixed bottom-16 max-w-[400px] mx-auto right-0 left-0  justify-center items-center flex-row w-full overflow-x-auto whitespace-nowrap">
+            {listEffect.map(({ id, icon }) => (
               <TabsTrigger
                 key={id}
                 value={id}
@@ -323,7 +321,8 @@ const FilteredSection = memo(function FilteredSection({
                 {icon}
               </TabsTrigger>
             ))}
-        </TabsList>
+          </TabsList>
+        )}
       </Tabs>
       <canvas id="canvasOutput" style={{ display: "none" }}></canvas>{" "}
     </>
