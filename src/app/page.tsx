@@ -1,14 +1,9 @@
-// import { DrawerFilter } from "@/components/modules/DrawerFilter";
-import { Filter } from "@/components/modules/Filter";
-import { JobBoard } from "@/components/modules/JobBoard";
-import SessionGuard from "@/components/modules/SessionGuard";
+import ImageUpload from "@/components/modules/ImageUpload";
 
 export default function Home() {
   return (
     <div className="w-full flex flex-col mx-auto max-w-[1350px]">
-      <SessionGuard />
-      <Filter />
-      <JobBoard />
+      <ImageUpload />
     </div>
   );
 }
