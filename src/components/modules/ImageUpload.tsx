@@ -11,6 +11,7 @@ import {
   DrawerFooter,
 } from "@/components/ui/drawer";
 import FilteredSection from "@/components/modules/FilteredSection";
+import { Button } from "../ui/button";
 
 function fileSizeValidator(file: File) {
   if (file.size > 2 * 1024 * 1024) {
@@ -42,17 +43,18 @@ export default function ImageUpload() {
 
   return (
     <section className="w-full flex flex-col mx-auto justify-center items-center">
-      <section
-        className="fixed   right-5 left-5  bottom-10 z-50 dropzone py-4 bg-slate-100 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer  rounded-full lg:rounded-4xl"
-        {...getRootProps()}
-      >
-        <input {...getInputProps()} />
-
-        <p className="text-sm  px-2 flex fle-row">
-          <Hand className=" w-auto h-4 mr-2" />
-          Drag or click to select image
-        </p>
-      </section>
+      <div className="flex items-center justify-center h-screen">
+        <section
+          className="fixed lg:absolute max-w-[500px] mx-auto group h-14 lg:h-40 right-5 left-5 bottom-14 lg:bottom-1/2 lg:top-1/2  z-50 dropzone py-4 bg-slate-100 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer rounded-2xl lg:rounded-3xl"
+          {...getRootProps()}
+        >
+          <input {...getInputProps()} />
+          <p className="text-sm px-2 flex flex-row">
+            <Hand className="w-auto h-4 mr-2 group-hover:animate-bounce " />
+            Drag or click to select image
+          </p>
+        </section>
+      </div>
 
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
         <DrawerContent className="h-auto">
@@ -64,8 +66,13 @@ export default function ImageUpload() {
             />
           </section>
           <DrawerFooter className="">
-            <DrawerClose className="text-lg font-medium text-red-400 tracking-wider">
-              cancel
+            <DrawerClose className="text-sm w-full  mx-auto md:text-base font-medium text-red-400 tracking-wider">
+              <Button
+                className="w-full bg-red-50/90 hover:bg-red-800/90 hover:text-white text-red-900 shadow-none max-w-[400px] rounded-lg text-xs"
+                size="sm"
+              >
+                Cancel
+              </Button>
             </DrawerClose>
           </DrawerFooter>
         </DrawerContent>

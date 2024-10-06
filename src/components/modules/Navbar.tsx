@@ -20,7 +20,7 @@ export function Navbar() {
       <NavigationMenu className="flex justify-center lg:justify-start  py-3 flex-row w-full max-w-[1350px] mx-auto px-3 lg:px-0">
         <NavigationMenuList className="px-2">
           <Palette className="w-5 h-5" />
-          <span className="font-bold font-sans text-xl">faceup</span>
+          <span className="font-bold font-sans text-xl">lightpixel</span>
         </NavigationMenuList>
       </NavigationMenu>
     </section>

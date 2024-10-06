@@ -6,6 +6,7 @@ import {
   CardContent,
   CardDescription,
   CardFooter,
+  CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -18,7 +19,7 @@ import {
 import React, { Fragment, useState, useEffect, memo } from "react";
 import { FileRejection } from "react-dropzone";
 import cv from "opencv-ts"; // Import OpenCV
-import { bytesToSize } from "@/lib/utils";
+import { bytesToSize, cn } from "@/lib/utils";
 
 const Icon = ({ simbol }: { simbol: string }) => (
   <div className="text-2xl font-bold flex justify-center items-center h-8 w-8">
@@ -79,10 +80,12 @@ interface FilterProps {
 const FileList = ({ files }: { files: File[] }) => (
   <>
     {files.map((file: any) => (
-      <div className="flex flex-col gap-1 mt-2 my-3" key={file.path}>
-        <p className="font-mono text-xs truncate">File: {file.path}</p>
-        <p className="font-mono text-xs truncate">
-          size: {bytesToSize(file.size)}
+      <div
+        className="flex flex-row w-full justify-end gap-1 mt-2 my-3"
+        key={file.path}
+      >
+        <p className=" italic font-mono max-w-full text-[0.65rem] truncate text-start text-slate-500 ">
+          {file.path}
         </p>
       </div>
     ))}
@@ -214,10 +217,10 @@ const FilteredSection = memo(function FilteredSection({
         onValueChange={(value) => setActiveTab(value)}
       >
         <TabsContent value={activeTab} className="">
-          <Card className="flex border-none absolute bottom-32 left-0 right-0 flex-col p-0 justify-end w-full">
-            <CardContent className="w-full h-auto space-y-2 flex flex-col">
-              <CardDescription className="gap-2 pb-4 rounded-xl">
-                <FileList files={acceptedFiles} />
+          <Card className="flex border-none absolute bottom-[7.5rem] left-0 right-0 flex-col p-0 justify-end w-full max-w-[400px] mx-auto">
+            <CardContent className="w-full h-auto space-y-2 flex flex-col overflow-y-auto">
+              <CardTitle></CardTitle>
+              <CardDescription className="gap-2 pb-2 rounded-xl">
                 {fileRejections.map(({ file, errors }: any) => (
                   <Fragment key={file.path}>
                     <ErrorList errors={errors} />
@@ -228,7 +231,7 @@ const FilteredSection = memo(function FilteredSection({
                     <>
                       <section
                         onClick={downloadImage}
-                        className="absolute right-4 bottom-4 rounded-full p-2 bg-gray-900/60  cursor-pointer hover:bg-black"
+                        className="absolute right-3 lg:right-4 bottom-3 lg:bottom-4 rounded-full p-2 bg-gray-900/60  cursor-pointer hover:bg-black"
                       >
                         <Download className="w-5 h-5 text-slate-200 font-bold" />
                       </section>
@@ -236,24 +239,33 @@ const FilteredSection = memo(function FilteredSection({
                   )}
 
                   {processedImage ? (
-                    <Image
-                      src={processedImage}
-                      className="w-full object-cover h-full aspect-square"
-                      alt="Processed Image"
-                      height={400}
-                      width={400}
-                      loading="lazy"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={processedImage}
+                        className={cn([
+                          activeTab === "square-crop" &&
+                            " dbg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed",
+                          "h-full w-full object-contain",
+                        ])}
+                        width={0}
+                        height={0}
+                        alt="Processed Image"
+                        loading="lazy"
+                        sizes="100vw"
+                      />
+                    </div>
                   ) : (
                     objectUrl && (
-                      <Image
-                        src={objectUrl}
-                        className="w-full object-cover h-full aspect-square"
-                        alt="Original Image"
-                        height={400}
-                        width={400}
-                        loading="lazy"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={objectUrl}
+                          className="h-full w-full object-contain"
+                          alt="Original Image"
+                          width={0}
+                          height={0}
+                          loading="lazy"
+                        />
+                      </div>
                     )
                   )}
 
@@ -263,25 +275,27 @@ const FilteredSection = memo(function FilteredSection({
                     </div>
                   )}
                 </div>
+
+                <FileList files={acceptedFiles} />
               </CardDescription>
             </CardContent>
 
             {(processedImage || objectUrl) && (
               <CardFooter className="w-full flex justify-center text-center  items-center font-medium text-slate-800 text-lg tracking-wider">
-                <span className="h-full justify-center items-center">
+                <span className="h-full text-sm justify-center items-center">
                   {getNameEffect(activeTab)}
                 </span>
               </CardFooter>
             )}
           </Card>
         </TabsContent>
-        <TabsList className="flex h-16 fixed bottom-16 right-0 left-0 items-center justify-center flex-row w-full overflow-x-auto whitespace-nowrap">
+        <TabsList className="flex h-16 fixed bottom-16 right-0 left-0  justify-center items-center flex-row w-full overflow-x-auto whitespace-nowrap">
           {(processedImage || objectUrl) &&
             listEffect.map(({ id, icon }) => (
               <TabsTrigger
                 key={id}
                 value={id}
-                className="inline-block border-none"
+                className="border-none aspect-square w-12 h-12 md:w-16 md:h-16 items-center justify-center flex"
               >
                 {icon}
               </TabsTrigger>

@@ -76,6 +76,33 @@ body {
   }
 }
 
+.animated-border {
+  border: 2px dashed #0070f3; /* Ubah warna sesuai kebutuhan */
+  position: relative;
+  overflow: hidden; /* Pastikan konten tidak meluap */
+}
+
+.animated-border::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  border: 2px dashed #0070f3; /* Warna border */
+  animation: borderAnimation 1.5s linear infinite; /* Panggil animasi */
+  box-sizing: border-box; /* Pastikan border tidak mempengaruhi ukuran elemen */
+}
+
+@keyframes borderAnimation {
+  0% {
+    transform: translate(-100%, -100%); /* Mulai di luar kiri atas */
+  }
+  100% {
+    transform: translate(100%, 100%); /* Pergi ke kanan bawah */
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
