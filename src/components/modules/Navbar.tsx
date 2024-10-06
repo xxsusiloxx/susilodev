@@ -3,7 +3,6 @@
 import { Palette } from "lucide-react";
 
 import * as React from "react";
-import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 import {
@@ -13,8 +12,6 @@ import {
 } from "@/components/ui/navigation-menu";
 
 export function Navbar() {
-  const { data: session, status } = useSession();
-
   return (
     <section className="w-full flex justify-between py-0 shadow-sm">
       <NavigationMenu className="flex justify-center lg:justify-start  py-3 flex-row w-full max-w-[1350px] mx-auto px-3 lg:px-0">
