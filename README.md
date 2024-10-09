@@ -1,4 +1,4 @@
-# **Lightpixel: A Simple Image Filter Application**
+# **Lightpixel: Dead Simple Image Filter Demo**
 
 ## **Overview**
 
