@@ -1,8 +1,7 @@
-import ImageUpload from "@/components/modules/ImageUpload";
-
+import ImageUpload from '@/components/modules/ImageUpload';
 export default function Home() {
   return (
-    <div className="w-full flex flex-col mx-auto max-w-[1350px]">
+    <div className="mx-auto flex w-full max-w-[1350px] flex-col">
       <ImageUpload />
     </div>
   );

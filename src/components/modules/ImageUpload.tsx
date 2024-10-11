@@ -1,22 +1,17 @@
-"use client";
+'use client';
 
-import { FileWithPath, useDropzone } from "react-dropzone";
-import { useState } from "react";
-import { Hand } from "lucide-react";
+import { FileWithPath, useDropzone } from 'react-dropzone';
+import { useState } from 'react';
+import { Hand } from 'lucide-react';
 
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-} from "@/components/ui/drawer";
-import FilteredSection from "@/components/modules/FilteredSection";
-import { Button } from "../ui/button";
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter } from '@/components/ui/drawer';
+import FilteredSection from '@/components/modules/FilteredSection';
+import { Button } from '../ui/button';
 
 function fileSizeValidator(file: File) {
   if (file.size > 2 * 1024 * 1024) {
     return {
-      code: "file-too-large",
+      code: 'file-too-large',
       message: `File size is bigger than 2Mb`,
     };
   }
@@ -27,33 +22,29 @@ function fileSizeValidator(file: File) {
 export default function ImageUpload() {
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
-    useDropzone({
-      validator: fileSizeValidator,
-      accept: {
-        "image/png": [],
-        "image/jpeg": [],
-      },
-      // maxSize: 2 * 1024 * 1024,
-      maxFiles: 1,
-      onDrop: () => setOpenDrawer(true),
-    });
+  const { getRootProps, getInputProps, acceptedFiles, fileRejections } = useDropzone({
+    validator: fileSizeValidator,
+    accept: {
+      'image/png': [],
+      'image/jpeg': [],
+    },
+    // maxSize: 2 * 1024 * 1024,
+    maxFiles: 1,
+    onDrop: () => setOpenDrawer(true),
+  });
 
   const acceptedImg = acceptedFiles[0];
 
   return (
-    <section className="w-full flex flex-col mx-auto justify-center items-center">
-      <div className="flex items-center justify-center h-screen">
+    <section className="mx-auto flex w-full flex-col items-center justify-center">
+      <div className="flex h-screen items-center justify-center">
         <section
-          className="fixed lg:absolute max-w-[800px] mx-auto group h-14 lg:h-60 right-5 left-5 bottom-12 lg:bottom-auto lg:top-1/4  z-50 dropzone py-4 bg-slate-100 hover:bg-slate-200/60 gap-1 font-medium text-gray-500 flex flex-col justify-center items-center cursor-pointer rounded-2xl lg:rounded-3xl"
+          className="dropzone group fixed inset-x-5 bottom-12 z-50 mx-auto flex h-14 max-w-[800px] cursor-pointer flex-col  items-center justify-center gap-1 rounded-2xl bg-slate-100 py-4 font-medium text-gray-500 hover:bg-slate-200/60 lg:absolute lg:bottom-auto lg:top-1/4 lg:h-60 lg:rounded-3xl"
           {...getRootProps()}
         >
-          <input
-            {...getInputProps()}
-            className="focus:outline-none outline-none cursor-pointer"
-          />
-          <p className="text-sm px-2 flex flex-row">
-            <Hand className="w-auto h-4 mr-2 group-hover:animate-bounce " />
+          <input {...getInputProps()} className="cursor-pointer outline-none focus:outline-none" />
+          <p className="flex flex-row px-2 text-sm">
+            <Hand className="mr-2 h-4 w-auto group-hover:animate-bounce " />
             Drag or click to select image
           </p>
         </section>
@@ -61,17 +52,13 @@ export default function ImageUpload() {
 
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
         <DrawerContent className="h-auto bg-white">
-          <section className="w-full flex flex-col  h-screen  justify-end items-center">
-            <FilteredSection
-              acceptedImg={acceptedImg}
-              acceptedFiles={acceptedFiles}
-              fileRejections={fileRejections}
-            />
+          <section className="flex h-screen w-full  flex-col  items-center justify-end">
+            <FilteredSection acceptedImg={acceptedImg} acceptedFiles={acceptedFiles} fileRejections={fileRejections} />
           </section>
           <DrawerFooter className="">
-            <DrawerClose className="text-sm w-full  mx-auto md:text-base font-medium text-red-400 tracking-wider">
+            <DrawerClose className="mx-auto w-full  text-sm font-medium tracking-wider text-red-400 md:text-base">
               <Button
-                className="w-full bg-red-50 hover:bg-red-800/70 hover:text-white text-red-900 shadow-none max-w-[400px] rounded-lg text-xs"
+                className="w-full max-w-[400px] rounded-lg bg-red-50 text-xs text-red-900 shadow-none hover:bg-red-800/70 hover:text-white"
                 size="sm"
               >
                 Cancel
