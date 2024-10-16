@@ -31,8 +31,6 @@ const downloadImage = () => {
   }
 };
 
-const d;
-
 const listEffect = [
   { id: 'normal', name: 'Normal', icon: <Icon simbol="N" /> },
   {
