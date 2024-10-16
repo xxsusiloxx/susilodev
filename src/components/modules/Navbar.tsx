@@ -1,51 +1,44 @@
-"use client";
+'use client';
 
-import { Palette } from "lucide-react";
+import { Palette } from 'lucide-react';
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import * as React from 'react';
+import { cn } from '@/lib/utils';
 
-import {
-  NavigationMenu,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu';
 
 export function Navbar() {
   return (
-    <section className="w-full flex justify-between py-0 shadow-sm">
-      <NavigationMenu className="flex justify-center lg:justify-start  py-3 flex-row w-full max-w-[1350px] mx-auto px-3 lg:px-0">
+    <section className="flex w-full justify-between py-0 shadow-sm">
+      <NavigationMenu className="mx-auto flex w-full  max-w-[1350px] flex-row justify-center p-3 lg:justify-start lg:px-0">
         <NavigationMenuList className="px-2">
-          <Palette className="w-5 h-5" />
-          <span className="font-bold font-sans text-xl">lightpixel</span>
+          <Palette className="size-5" />
+          <span className="font-sans text-xl font-bold">lightpixel</span>
         </NavigationMenuList>
       </NavigationMenu>
     </section>
   );
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";
+const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
+  ({ className, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <a
+            ref={ref}
+            className={cn(
+              'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors',
+              className,
+            )}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">{children}</p>
+          </a>
+        </NavigationMenuLink>
+      </li>
+    );
+  },
+);
+ListItem.displayName = 'ListItem';

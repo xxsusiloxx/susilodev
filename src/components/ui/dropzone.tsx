@@ -1,5 +1,5 @@
-import { useDropzone } from "react-dropzone";
-import { ChangeEventHandler, FC } from "react";
+import { useDropzone } from 'react-dropzone';
+import { ChangeEventHandler, FC } from 'react';
 
 export const Dropzone: FC<{
   multiple?: boolean;

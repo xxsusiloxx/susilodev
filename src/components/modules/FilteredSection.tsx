@@ -17,7 +17,7 @@ import Mat from 'opencv-ts/src/core/Mat';
  * @returns {JSX.Element}
  */
 const Icon = ({ simbol }: { simbol: string }) => (
-  <div className="text-2xl font-bold flex justify-center items-center h-8 w-8">{simbol}</div>
+  <div className="flex size-8 items-center justify-center text-2xl font-bold">{simbol}</div>
 );
 
 const downloadImage = () => {
@@ -31,6 +31,8 @@ const downloadImage = () => {
   }
 };
 
+const d;
+
 const listEffect = [
   { id: 'normal', name: 'Normal', icon: <Icon simbol="N" /> },
   {
@@ -41,18 +43,18 @@ const listEffect = [
   {
     id: 'graybold',
     name: 'Graybold',
-    icon: <Highlighter className="h-6 w-6 font-normal" />,
+    icon: <Highlighter className="size-6 font-normal" />,
   },
 
   {
     id: 'rusian-beauty',
     name: 'Rusian Beauty',
-    icon: <Sparkles className="h-6 w-6 font-normal" />,
+    icon: <Sparkles className="size-6 font-normal" />,
   },
   {
     id: 'square-crop',
     name: 'Forcesquare Crop',
-    icon: <CropIcon className="h-6 w-6 font-normal" />,
+    icon: <CropIcon className="size-6 font-normal" />,
   },
 ];
 
@@ -79,17 +81,17 @@ interface FilterProps {
 }
 
 const FileList = ({ files }: { files: FileWithPath[] }) => (
-  <ul className="flex flex-col gap-1 mt-2 mb-5">
+  <ul className="mb-5 mt-2 flex flex-col gap-1">
     {files.map((file: FileWithPath) => (
-      <li key={file.path} className="italic font-mono text-[0.65rem] truncate text-start text-slate-500">
-        <span className="bg-blue-50 text-slate-500 px-2 py-1  truncate rounded-sm">{file.path}</span>
+      <li key={file.path} className="truncate text-start font-mono text-[0.65rem] italic text-slate-500">
+        <span className="truncate rounded-sm bg-blue-50 px-2  py-1 text-slate-500">{file.path}</span>
       </li>
     ))}
   </ul>
 );
 
 const ErrorList = ({ errors }: { errors: Array<{ code: string; message: string }> }) => (
-  <ul className="text-red-500 text-xs font-mono my-2 mb-3 italic">
+  <ul className="my-2 mb-3 font-mono text-xs italic text-red-500">
     {errors.map(({ code, message }) => (
       <li className="text-xs" key={code}>
         {message}
@@ -200,19 +202,21 @@ const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFil
         <TabsContent value={activeTab} className="">
           <Card
             className={cn([
-              'flex border-none absolute bg-transparent shadow-none left-0  right-0 flex-col p-0 justify-end w-full max-w-[400px] mx-auto',
+              'absolute inset-x-0 mx-auto flex w-full max-w-[400px]  flex-col justify-end border-none bg-transparent p-0 shadow-none',
               Boolean(processedImage || objectUrl) ? 'bottom-32' : 'bottom-12',
-            ])}>
-            <CardContent className="w-full px-4 py-0 lg:px-0 lg:py-4 h-auto space-y-2 flex flex-col  justify-center mx-auto items-center  overflow-y-auto">
-              <CardDescription className="rounded-xl  w-full">
-                <div className="relative  flex justify-center  items-center w-full flex-col mx-auto left-0 right-0">
-                  <div className="relative mx-auto justify-center flex items-center w-full h-full">
+            ])}
+          >
+            <CardContent className="mx-auto flex h-auto w-full flex-col items-center justify-center space-y-2 overflow-y-auto  px-4 py-0 lg:px-0  lg:py-4">
+              <CardDescription className="w-full  rounded-xl">
+                <div className="relative  inset-x-0 mx-auto  flex w-full flex-col items-center justify-center">
+                  <div className="relative mx-auto flex size-full items-center justify-center">
                     {(processedImage || objectUrl) && (
                       <>
                         <section
                           onClick={downloadImage}
-                          className="absolute right-2 z-50 lg:right-4 bottom-2 lg:bottom-4 rounded-full p-2 bg-gray-900/50 cursor-pointer hover:bg-gray-900">
-                          <Download className="w-5 h-5 text-slate-200 font-bold" />
+                          className="absolute bottom-2 right-2 z-50 cursor-pointer rounded-full bg-gray-900/50 p-2 hover:bg-gray-900 lg:bottom-4 lg:right-4"
+                        >
+                          <Download className="size-5 font-bold text-slate-200" />
                         </section>
                       </>
                     )}
@@ -222,9 +226,9 @@ const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFil
                         src={processedImage}
                         className={cn([
                           activeTab === 'square-crop'
-                            ? 'bg-clip-padding p-1 bg-transparent border-2 border-blue-900/70 border-dashed'
-                            : 'border-solid border-slate-200 border-[1px] ',
-                          'h-full w-full object-cover',
+                            ? 'border-2 border-dashed border-blue-900/70 bg-transparent bg-clip-padding p-1'
+                            : 'border border-solid border-slate-200 ',
+                          'size-full object-cover',
                         ])}
                         width={0}
                         height={0}
@@ -232,12 +236,12 @@ const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFil
                         sizes="100vw"
                       />
                     ) : (
-                      objectUrl && <img src={objectUrl} className="h-full object-cover w-full" alt="Original Image" />
+                      objectUrl && <img src={objectUrl} className="size-full object-cover" alt="Original Image" />
                     )}
                   </div>
                   {fileRejections?.length > 0 && (
-                    <div className="w-full mx-auto  h-full bg-slate-200 flex self-center justify-center items-center aspect-square">
-                      <Ban className="w-20 h-20 mx-auto text-slate-400/60 font-normal" />
+                    <div className="mx-auto flex  aspect-square size-full items-center justify-center self-center bg-slate-200">
+                      <Ban className="mx-auto size-20 font-normal text-slate-400/60" />
                     </div>
                   )}
                 </div>
@@ -253,20 +257,21 @@ const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFil
             </CardContent>
 
             {(processedImage || objectUrl) && (
-              <CardFooter className="w-full flex truncate h-8 justify-center text-center  items-center font-medium text-slate-800 text-lg tracking-wider">
-                <span className="h-full text-sm justify-center items-center">{getNameEffect(activeTab)}</span>
+              <CardFooter className="flex h-8 w-full items-center justify-center truncate  text-center text-lg font-medium tracking-wider text-slate-800">
+                <span className="h-full items-center justify-center text-sm">{getNameEffect(activeTab)}</span>
               </CardFooter>
             )}
           </Card>
         </TabsContent>
 
         {(processedImage || objectUrl) && (
-          <TabsList className="flex h-16 fixed bottom-16 max-w-[400px] mx-auto right-0 left-0  justify-center items-center flex-row w-full overflow-x-auto whitespace-nowrap">
+          <TabsList className="fixed inset-x-0 bottom-16 mx-auto flex h-16 w-full max-w-[400px]  flex-row items-center justify-center overflow-x-auto whitespace-nowrap">
             {listEffect.map(({ id, icon }) => (
               <TabsTrigger
                 key={id}
                 value={id}
-                className="border-none aspect-square w-12 h-12 md:w-16 md:h-16 items-center justify-center flex">
+                className="flex aspect-square size-12 items-center justify-center border-none md:size-16"
+              >
                 {icon}
               </TabsTrigger>
             ))}
