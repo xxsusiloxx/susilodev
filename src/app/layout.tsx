@@ -10,9 +10,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased font-sans">
+      <body className="font-sans antialiased">
         <Navbar />
-        <main className="flex flex-col w-full max-w-[1400px] px-4 lg:px-6 mx-auto">{children}</main>
+        <main className="mx-auto flex w-full max-w-[1400px] flex-col px-4 lg:px-6">{children}</main>
       </body>
     </html>
   );
