@@ -6,6 +6,6 @@ const buildEslintCommand = (filenames) =>
 
 // Export konfigurasi lint-staged
 module.exports = {
-  '*.{js,jsx,ts,tsx}': [buildEslintCommand, 'prettier --write'], // Jalankan ESLint dan Prettier pada file JavaScript/TypeScript
+  '*.{js,jsx,ts,tsx}': ['eslint --fix --ext .js,.jsx,.ts,.tsx', 'prettier --write'], // Jalankan ESLint dan Prettier pada file JavaScript/TypeScript
   '*.{json,css,md}': ['prettier --write'], // Jalankan Prettier pada file JSON, CSS, dan Markdown
 };
