@@ -8,8 +8,6 @@ import { Drawer, DrawerClose, DrawerContent, DrawerFooter } from '@/components/u
 import FilteredSection from '@/components/modules/FilteredSection';
 import { Button } from '../ui/button';
 
-const d;
-
 function fileSizeValidator(file: File) {
   if (file.size > 2 * 1024 * 1024) {
     return {
