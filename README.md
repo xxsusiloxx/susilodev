@@ -17,7 +17,7 @@ and Chromium engines, ensuring a seamless user experience across various browser
   and scalable code.
 - **Cross-Browser Compatibility**: Compatible with WebKit, Gecko,
   and Chromium engines, guaranteeing a consistent user experience.
-- _fully covered test tools_ with vitest, React testing Library, and playwright
+- **fully covered test tools** with vitest, React testing Library, and playwright
 
 ## **Live Demo**
 
