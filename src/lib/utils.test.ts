@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { cn, relativeTime, bytesToSize } from './utils';
+import { cn, relativeTime, bytesToSize } from '@/lib/utils';
 import dayjs from 'dayjs';
 
-describe('Utils Functions', () => {
+describe('Utils Functions add', () => {
   describe('cn', () => {
     it('should combine class names correctly', () => {
       expect(cn('text-lg', 'font-bold')).toBe('text-lg font-bold');

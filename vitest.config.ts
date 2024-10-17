@@ -3,9 +3,8 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   test: {
-    environment: 'node', // if browser mode or when using React Testing Library we use "jsdom"
-    // setupFiles: './vitest.setup.ts', // additional opt in browser
+    environment: 'jsdom', // if browser mode or when using React Testing Library we use "jsdom"
   },
 });
