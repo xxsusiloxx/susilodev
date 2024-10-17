@@ -2,14 +2,22 @@
 
 ## **Overview**
 
-Lightpixel is a basic image filter application built using OpenCV.js, providing a range of filters to enhance and manipulate images. This application is designed to be fully compatible with WebKit, Gecko, and Chromium engines, ensuring a seamless user experience across various browsers.
+this demo is a basic image filter application built using OpenCV.js,
+providing a range of filters to enhance and manipulate images.
+This application is designed to be fully compatible with WebKit, Gecko,
+and Chromium engines, ensuring a seamless user experience across various browsers.
 
 ## **Key Features**
 
-- **Image Filter**: Apply various filters to your images using OpenCV.js, including grayscale, blur, threshold, and more.
-- **Drag and Drop**: Easily upload images by dragging and dropping files into the application.
-- **Fully TypeScript Support**: Built with TypeScript, ensuring maintainable and scalable code.
-- **Cross-Browser Compatibility**: Compatible with WebKit, Gecko, and Chromium engines, guaranteeing a consistent user experience.
+- **Image Filter**: Apply various filters to your images using OpenCV.js,
+  including grayscale, blur, threshold, and more.
+- **Drag and Drop**: Easily upload images by dragging and
+  dropping files into the application.
+- **Fully TypeScript Support**: Built with TypeScript, ensuring maintainable
+  and scalable code.
+- **Cross-Browser Compatibility**: Compatible with WebKit, Gecko,
+  and Chromium engines, guaranteeing a consistent user experience.
+- fully covered test tools with vitest, React testing Library, and playwright
 
 ## **Live Demo**
 
@@ -34,7 +42,8 @@ Then, open your browser and navigate to: [http://localhost:3000](http://localhos
 
 ## **Contribution**
 
-Feel free to contribute to Lightpixel by submitting pull requests or reporting issues. Your input is valuable in helping us improve this application.
+Feel free to contribute to Lightpixel by submitting pull requests or reporting issues.
+Your input is valuable in helping us improve this application.
 
 ## **License**
 
