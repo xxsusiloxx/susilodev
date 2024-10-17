@@ -33,6 +33,8 @@ npm run dev
 
 Then, open your browser and navigate to: [http://localhost:3000](http://localhost:3000)
 
+..
+
 ## **Getting Started**
 
 1. Clone the repository or download the source code.
