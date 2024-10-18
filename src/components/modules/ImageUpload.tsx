@@ -1,6 +1,6 @@
 'use client';
 
-import { FileWithPath, useDropzone } from 'react-dropzone';
+import { useDropzone, FileError } from 'react-dropzone';
 import { useState } from 'react';
 import { Hand } from 'lucide-react';
 
@@ -8,11 +8,11 @@ import { Drawer, DrawerClose, DrawerContent, DrawerFooter } from '@/components/u
 import FilteredSection from '@/components/modules/FilteredSection';
 import { Button } from '../ui/button';
 
-function fileSizeValidator(file: File) {
+function fileSizeValidator(file: File): FileError | null {
   if (file.size > 2 * 1024 * 1024) {
     return {
       code: 'file-too-large',
-      message: `File size is bigger than 2Mb`,
+      message: 'File size is bigger than 2Mb',
     };
   }
 
@@ -39,10 +39,15 @@ export default function ImageUpload() {
     <section className="mx-auto flex w-full flex-col items-center justify-center">
       <div className="flex h-screen items-center justify-center">
         <section
+          data-testid="upload-section"
           className="dropzone group fixed inset-x-5 bottom-12 z-50 mx-auto flex h-14 max-w-[800px] cursor-pointer flex-col  items-center justify-center gap-1 rounded-2xl bg-slate-100 py-4 font-medium text-gray-500 hover:bg-slate-200/60 lg:absolute lg:bottom-auto lg:top-1/4 lg:h-60 lg:rounded-3xl"
           {...getRootProps()}
         >
-          <input {...getInputProps()} className="cursor-pointer outline-none focus:outline-none" />
+          <input
+            data-testid="input-image"
+            {...getInputProps()}
+            className="cursor-pointer outline-none focus:outline-none"
+          />
           <p className="flex flex-row px-2 text-sm">
             <Hand className="mr-2 h-4 w-auto group-hover:animate-bounce " />
             Drag or click to select image

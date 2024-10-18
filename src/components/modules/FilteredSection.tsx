@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { saveAs } from 'file-saver';
+import { useId } from 'react';
 
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -88,15 +89,18 @@ const FileList = ({ files }: { files: FileWithPath[] }) => (
   </ul>
 );
 
-const ErrorList = ({ errors }: { errors: Array<{ code: string; message: string }> }) => (
-  <ul className="my-2 mb-3 font-mono text-xs italic text-red-500">
-    {errors.map(({ code, message }) => (
-      <li className="text-xs" key={code}>
-        {message}
-      </li>
-    ))}
-  </ul>
-);
+const ErrorList = ({ errors }: { errors: Array<{ code: string; message: string }> }) => {
+  const keyId = useId();
+  return (
+    <ul className="my-2 mb-3 font-mono text-xs italic text-red-500">
+      {errors.map(({ code, message }) => (
+        <li data-errorid={code} className="text-xs" key={keyId}>
+          {message}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFiles, fileRejections }: FilterProps) {
   const [activeTab, setActiveTab] = useState('normal');
@@ -211,6 +215,7 @@ const FilteredSection = memo(function FilteredSection({ acceptedImg, acceptedFil
                     {(processedImage || objectUrl) && (
                       <>
                         <section
+                          data-testid="download-image"
                           onClick={downloadImage}
                           className="absolute bottom-2 right-2 z-50 cursor-pointer rounded-full bg-gray-900/50 p-2 hover:bg-gray-900 lg:bottom-4 lg:right-4"
                         >
