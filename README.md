@@ -1,52 +1,31 @@
-# **Lightpixel: Dead Simple Image Filter Demo**
+# Susilo nextjs Boilerplate
 
-## **Overview**
+This is a boilerplate project for building modern Next.js applications with a strong focus on **TypeScript**, **UI components**, **testing**, and **best practices** for version control and commit standards.
 
-this demo is a basic image filter application built using OpenCV.js,
-providing a range of filters to enhance and manipulate images.
-This application is designed to be fully compatible with WebKit, Gecko,
-and Chromium engines, ensuring a seamless user experience across various browsers.
+## Features
 
-## **Key Features**
+- **Next.js 13** with **App Directory** support
+- **TypeScript** for static typing
+- UI components with **[shadcn-ui](https://ui.shadcn.dev)**
+- **React Hook Form** for form handling
+- Unit testing with **[Vitest](https://vitest.dev)**
+- End-to-end (E2E) testing with **[Playwright](https://playwright.dev)**
+- Git hooks with **[Husky](https://typicode.github.io/husky)**
+- Conventional commit messages using **[Commitizen](https://commitizen-tools.github.io/commitizen)**
 
-- **Image Filter**: Apply various filters to your images using OpenCV.js,
-  including grayscale, blur, threshold, and more.
-- **Drag and Drop**: Easily upload images by dragging and
-  dropping files into the application.
-- **Fully TypeScript Support**: Built with TypeScript, ensuring maintainable
-  and scalable code.
-- **Cross-Browser Compatibility**: Compatible with WebKit, Gecko,
-  and Chromium engines, guaranteeing a consistent user experience.
-- **fully covered test tools** with vitest, React testing Library, and playwright
+## Getting Started
 
-## **Live Demo**
+### Prerequisites
 
-Try out Lightpixel at: [https://upload-ocv.vercel.app](https://upload-ocv.vercel.app)
+Ensure you have the following installed on your machine:
 
-## **Development Mode**
+- [Node.js](https://nodejs.org/) >= 14.x
+- [npm](https://npmjs.com) or [yarn](https://yarnpkg.com/)
 
-To run the application in development mode, execute the following command:
+### Installation
 
-```bash
-npm run dev
-```
-
-Then, open your browser and navigate to: [http://localhost:3000](http://localhost:3000)
-
-..
-
-## **Getting Started**
-
-1. Clone the repository or download the source code.
-2. Install dependencies by running `npm install`.
-3. Start the development server with `npm run dev`.
-4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
-
-## **Contribution**
-
-Feel free to contribute to Lightpixel by submitting pull requests or reporting issues.
-Your input is valuable in helping us improve this application.
-
-## **License**
-
-Lightpixel is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/xxsusiloxx/susilo-next.git
+   cd your-repo
+   ```
