@@ -1,7 +1,5 @@
 'use client';
 
-import { Palette } from 'lucide-react';
-
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -12,8 +10,9 @@ export function Navbar() {
     <section className="flex w-full justify-between py-0 shadow-sm">
       <NavigationMenu className="mx-auto flex w-full  max-w-[1350px] flex-row justify-center p-3 lg:justify-start lg:px-0">
         <NavigationMenuList className="px-2">
-          <Palette className="size-5" />
-          <span className="font-sans text-xl font-bold">lightpixel</span>
+          <span className="bg-black px-2 py-1 font-mono text-xl font-light text-white">
+            susilo.dev <i className="-ml-3 animate-pulse duration-500">_</i>
+          </span>
         </NavigationMenuList>
       </NavigationMenu>
     </section>
