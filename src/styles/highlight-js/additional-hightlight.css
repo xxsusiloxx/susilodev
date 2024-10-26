@@ -1,0 +1,20 @@
+/* Custom highlight styles */
+pre,
+code {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+pre {
+  padding: 16px;
+  background-color: #282c34;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+code {
+  padding: 2px 6px;
+  background-color: #2c313c;
+  border-radius: 4px;
+}

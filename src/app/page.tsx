@@ -1,8 +1,6 @@
-import { GetStaticProps } from 'next';
 import { getSortedPostsData } from '../lib/posts';
 import ListArticles from '@/components/modules/ListArticles';
-import { Github, Twitter, Linkedin } from 'lucide-react';
-import { useId } from 'react';
+import { BriefcaseBusiness, Github, Twitter } from 'lucide-react';
 
 interface Post {
   id: string;
@@ -33,19 +31,18 @@ const Icons = [
     name: 'X',
     label: 'X',
     url: 'https://x.com/xxsusiloxx',
-    icon: <Linkedin className="cursor-pointer font-thin text-slate-400 hover:text-gray-700" />,
+    icon: <BriefcaseBusiness className="cursor-pointer font-thin text-slate-400 hover:text-gray-700" />,
   },
 ];
 
 const Home: React.FC<HomeProps> = async () => {
-  const data = getSortedPostsData();
+  const data = await getSortedPostsData();
 
-  const iconId = useId();
+  console.log('data', data);
 
   return (
     <main className="flex h-screen w-full flex-row gap-8">
       <section className="w-7/12 overflow-y-auto">
-        <div className="h-1/2"></div>
         <h2 className="py-5 text-2xl font-light text-slate-400">Latest</h2>
         <ListArticles data={data} />
       </section>
@@ -53,7 +50,7 @@ const Home: React.FC<HomeProps> = async () => {
       <aside className="flex w-5/12 flex-col items-end justify-center gap-y-2">
         <section className="size-auto bg-gray-700 px-2 py-1 pr-4 font-mono text-2xl font-light text-white">
           <h1>
-            susilo.dev <i className="animate-pulse duration-500">_</i>
+            susilo.dev <i className="-ml-3 animate-pulse duration-500">_</i>
           </h1>
         </section>
 
@@ -71,7 +68,7 @@ const Home: React.FC<HomeProps> = async () => {
           <ul className="flex flex-row gap-2">
             {Icons.map((x) => {
               return (
-                <div className="size-10" key={iconId}>
+                <div className="size-10" key={x.label}>
                   {x.icon}
                 </div>
               );
